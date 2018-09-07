@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:outputStylesheet library="default" name="stylesheets/style.css" />
+</h:head>
+
+<h:body onload="getClientInfo()">
+    <p:layout fullPage="true">
+        <p:layoutUnit position="north" resizable="false" style="border:none;" class="dcLayout" id="mainMenu">
+            <h:form>
+                <p:menubar model="#{mainMenuBean.model}">
+                    <f:facet name="options">
+                        <p:inputText value="#{itemsBean.items.searchString}" style="width:205px !important;" />
+                        <p:commandButton icon="fa fa-search" actionListener="#{itemsBean.search}" update=":itemOverviewForm:itemOverview" />
+
+                        <p:menuButton value="#{loginBean.username}" style="margin-left:10px;">
+                            <p:menuitem value="#{translationsBean.getText('lblLogoff')}" action="#{loginBean.logoff}" icon="ui-icon-extlink" />
+                        </p:menuButton>
+                    </f:facet>
+                </p:menubar>
+            </h:form>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="west" resizable="false" minSize="220" maxSize="220" style="border:none;" id="modulesMenu">
+            <ui:include src="menu.xhtml" />
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" style="border:none;overflow-y: hidden !important;">
+        
+            <h:form id="itemOverviewForm">
+                <p:dataGrid 
+                    var="item" value="#{itemsBean.items.items}" 
+                    columns="#{userSettingsBean.overviewNumberOfColumns}" 
+                    rows="#{userSettingsBean.overviewNumberOfItemsPerRow}" 
+                    layout="grid" rowKey="#{item.ID}" id="itemOverview" rowsPerPageTemplate="5,10,15,50,100"
+                    paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                    paginatorPosition="bottom" styleClass="itemoverview"
+                    widgetVar="overview">
+
+                    <!--  this is the sole place where the width and height is determined for this overview -->
+                    <p:panel style="width: 270px; height: 55px;overflow-y: hidden !important;" rendered="#{modulesBean.selectedModule.advancedView}">
+                        <p:panelGrid columns="1" class="dcPanel">
+                            <p:column class="dcPanel">
+                                <p:row style="width: 100%;">
+                                    <table class="layouttable" style="border: none; padding: 0px; margin: 0;">
+                                        <tr style="border: none; padding: 0px; margin: 0;">
+                                            <td style="border: none; padding: 0px; margin: 0; width: 25px;"><h:outputText value="#{item.title}" /></td>
+                                            <td style="border: none; padding: 0px; margin: 0; width: 25px;"><p:commandLink update=":viewItemDetail" oncomplete="PF('viewItemDetail').show()">
+                                                    <h:outputText styleClass="fa fa-folder-open-o" style="margin:0 auto;" />
+                                                    <f:setPropertyActionListener value="#{item}" target="#{viewItemBean.item}" />
+                                                    <f:setPropertyActionListener value="#{item}" target="#{itemsBean.selectedItemForView}" />
+                                                </p:commandLink></td>
+                                            <td style="border: none; padding: 0px; margin: 0; width: 25px;"><p:commandLink update=":editItemDetail" oncomplete="PF('editItemDetail').show()"
+                                                    rendered="#{modulesBean.selectedModule.editingAllowed}">
+                                                    <h:outputText styleClass="fa fa-fw fa-edit" style="margin:0 auto;" />
+                                                    <f:setPropertyActionListener value="#{item}" target="#{editItemBean.item}" />
+                                                    <f:setPropertyActionListener value="#{item}" target="#{itemsBean.selectedItemForEdit}" />
+                                                </p:commandLink></td>
+                                        </tr>
+                                    </table>
+                                </p:row>
+                            </p:column>
+                        </p:panelGrid>
+                    </p:panel>
+
+                    <p:panel style="width: 270px; height: 212px;" rendered="#{modulesBean.selectedModule.advancedView}">
+
+                        <p:panelGrid columns="1" class="dcPanel">
+                            <p:column class="dcPanel">
+                                <p:row style="width: 100%;">
+                                    <center>
+                                        <p:graphicImage value="#{imageBean.content}" rendered="#{item.cover.alive}" cache="false" immediate="true">
+                                            <f:param name="filename" value="#{item.cover.filename}_small" />
+                                        </p:graphicImage>
+
+                                        <p:graphicImage url="/datacrow/javax.faces.resource/default/images/noimage.png.xhtml" rendered="#{!item.cover.alive}" />
+
+                                    </center>
+                                </p:row>
+                            </p:column>
+                        </p:panelGrid>
+                    </p:panel>
+
+                    <!-- This if for simple items, such as categories -->
+
+                    <p:panel rendered="#{!modulesBean.selectedModule.advancedView}" style="height: 50px;">
+                        <table class="layouttable" style="border: none; padding: 0px; margin: 0;">
+                            <tr style="border: none; padding: 0px; margin: 0;">
+                                <td style="border: none; padding: 0px; margin: 0; width: 25px;"><p:commandLink update=":viewItemDetail" oncomplete="PF('viewItemDetail').show()">
+                                        <h:outputText styleClass="fa fa-folder-open-o" style="margin:0 auto;" />
+                                        <f:setPropertyActionListener value="#{item}" target="#{itemsBean.selectedItemForView}" />
+                                    </p:commandLink> <p:commandLink update=":editItemDetail" oncomplete="PF('editItemDetail').show()" rendered="#{modulesBean.selectedModule.editingAllowed}">
+                                        <h:outputText styleClass="fa fa-fw fa-edit" style="margin:0 auto;" />
+                                        <f:setPropertyActionListener value="#{item}" target="#{itemsBean.selectedItemForEdit}" />
+                                    </p:commandLink></td>
+
+                                <td style="border: none; padding: 0px; margin: 0; width: 25px;"><p:graphicImage value="#{imageBean.content}" rendered="#{item.icon.alive}" cache="false">
+                                        <f:param name="filename" value="#{item.icon.filename}" />
+                                    </p:graphicImage></td>
+                                <td style="border: none; padding: 0px; margin: 0;" rowspan="2"><h:outputText value="#{item.title}" /></td>
+                            </tr>
+
+                        </table>
+                    </p:panel>
+                </p:dataGrid>
+            </h:form>
+
+            <ui:include src="edititemform.xhtml" />
+            <ui:include src="viewitemform.xhtml" />
+            <ui:include src="editoverviewsettings.xhtml" />
+            <ui:include src="edititemformsettings.xhtml" />
+
+        </p:layoutUnit>
+    </p:layout>
+    <script type="text/javascript">
+		function start() {
+			PF('statusDialog').show();
+		}
+
+		function stop() {
+			PF('statusDialog').hide();
+		}
+		
+        function getClientInfo()
+        {
+            (document.getElementById('screenSizeX')).value = window.innerWidth;
+            (document.getElementById('screenSizeY')).value = window.innerHeight;
+        }
+	</script>
+</h:body>
+</html>

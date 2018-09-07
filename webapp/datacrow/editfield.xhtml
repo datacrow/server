@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <p:outputLabel for="editInputText" value="#{field.label}" rendered="#{field.textfield || field.url || field.file}" />
+	<p:inputText id="editInputText" disabled="#{field.readonly}" required="#{field.required}" value="#{field.value}" rendered="#{field.textfield || field.url || field.file}" styleClass="textfield" style="width:100% !important;" />
+
+    <p:outputLabel for="editSelectBooleanCheckbox" value="#{field.label}  " rendered="#{field.checkbox}" />
+	<p:selectBooleanCheckbox id="editSelectBooleanCheckbox" disabled="#{field.readonly}" required="#{field.required}" value="#{field.value}" rendered="#{field.checkbox}" immediate="true" styleClass="checkbox" />
+	
+	<p:outputLabel for="editInputTextarea" value="#{field.label}" rendered="#{field.longTextfield}" />
+	<p:inputTextarea id="editInputTextarea" rows="10" cols="50" required="#{field.required}" autoResize="false" disabled="#{field.readonly}" value="#{field.value}" rendered="#{field.longTextfield}" style="width:100% !important;" />
+	
+	<p:outputLabel for="editDate" value="#{field.label}" rendered="#{field.date}" />
+	<p:panel styleClass="dcPanel" rendered="#{field.date}">
+	   <p:calendar id="editDate" required="#{field.required}" disabled="#{field.readonly}" popupCalendar="true" type="date" value="#{field.value}" style="width:100% !important;" />
+	</p:panel>
+
+    <p:outputLabel for="editDuration" value="#{field.label}" rendered="#{field.duration}" />
+    <p:panel styleClass="dcPanel" rendered="#{field.duration}">
+        <p:calendar id="editDuration" required="#{field.required}" disabled="#{field.readonly}" popupCalendar="true" timeOnly="true" pattern="HH:mm:ss" value="#{field.value}" style="width:100% !important;" />
+    </p:panel>
+	
+	<p:outputLabel for="editDouble" value="#{field.label}" rendered="#{field.doubleValue}" />
+	<p:inputText id="editDouble" rendered="#{field.doubleValue}" required="#{field.required}" disabled="#{field.readonly}" value="#{field.value}" style="width:100% !important;">
+	   <f:convertNumber groupingUsed="true" maxFractionDigits="2" type="number" />
+	</p:inputText>
+	
+	<p:outputLabel for="editNumber" value="#{field.label}" rendered="#{field.number}" />
+	<p:inputText id="editNumber" rendered="#{field.number}" required="#{field.required}" disabled="#{field.readonly}" value="#{field.value}" style="width:100% !important;">
+	   <f:convertNumber groupingUsed="false" maxFractionDigits="0" type="number" />
+	</p:inputText>
+
+    <p:outputLabel for="editRating" value="#{field.label}" rendered="#{field.rating}" />
+    <p:rating id="editRating" disabled="#{field.readonly}" required="#{field.required}" value="#{field.value}" stars="10" cancel="false" rendered="#{field.rating}" />
+    
+    <p:outputLabel for="editTag" value="#{field.label}" rendered="#{field.tagField}" />
+    <p:autoComplete rendered="#{field.tagField}" 
+                    disabled="#{field.readonly}" 
+                    required="#{field.required}"
+                    multiple="true"
+                    id="editTag"
+                    value="#{field.value}" 
+                    completeMethod="#{field.getMatchingReferences}"
+                    var="reference" 
+                    itemLabel="#{reference.label}" 
+                    itemValue="#{reference}" 
+                    converter="#{field.converter}" 
+                    forceSelection="false">
+        <p:column>
+            <h:outputText value="#{reference.label}" />
+        </p:column>
+    </p:autoComplete>
+    
+    <p:outputLabel for="editDropDown" value="#{field.label}" rendered="#{field.dropDown}" />
+    <p:panelGrid rendered="#{field.dropDown}" columns="2" style="width: 100% !important" styleClass="dcListBox" columnClasses="listbox-left, listbox-right">
+        <p:column style="border:none !important;">
+	        <p:selectOneListbox 
+	          id="editDropDown"
+	          filter="true" 
+	          filterMatchMode="contains"
+	          disabled="#{field.readonly}" 
+	          required="#{field.required}"
+	          value="#{field.value}"
+	          converter="#{field.converter}"
+	          scrollHeight="70"
+	          style="width:95% !important;height:100px">
+	                          
+	          <f:selectItems value="#{field.allReferences}" 
+	                         var="ref" 
+	                         itemLabel="#{ref.label}" 
+	                         itemValue="#{ref}" />
+	        </p:selectOneListbox>
+        </p:column>
+        <p:column style="border:none !important;">
+	        <p:commandButton
+	            icon="fa fa-plus-circle" 
+	            rendered="#{!field.readonly and field.navigationEditAllowed}"
+	            update=":editItemDetailContents" 
+	            actionListener="#{editItemBean.add(field)}" />
+        </p:column>
+    </p:panelGrid>
+
+    <p:outputLabel value="#{field.label}" rendered="#{field.multiRelate}" />
+    <p:panel styleClass="dcPanel" rendered="#{field.multiRelate and !field.navigationAllowed}">
+        <ui:repeat var="reference" value="#{field.value}">
+           <p:commandLink 
+               styleClass="dcButton">
+               <p:graphicImage value="#{imageBean.content}" rendered="#{reference.iconExists}" cache="false">
+                   <f:param name="filename" value="#{reference.iconFilename}" />
+               </p:graphicImage>
+               #{reference.label}
+            </p:commandLink>
+        </ui:repeat>
+    </p:panel>
+
+    <p:panel styleClass="dcPanel" rendered="#{field.multiRelate and field.navigationEditAllowed}">
+        <ui:repeat var="reference" value="#{field.value}">
+           <p:commandLink 
+               update=":editItemDetail" 
+               oncomplete="PF('editItemDetail').show()"
+               styleClass="dcButton">
+               <p:graphicImage value="#{imageBean.content}" rendered="#{reference.iconExists}" cache="false">
+                   <f:param name="filename" value="#{reference.iconFilename}" />
+               </p:graphicImage>
+               #{reference.label}
+               <f:setPropertyActionListener target="#{editItemBean.reference}" value="#{reference}" />
+            </p:commandLink>
+        </ui:repeat>
+        
+        <p:commandButton
+            icon="fa fa-plus-circle" 
+            rendered="#{!field.readonly and field.navigationEditAllowed}"
+            update=":editItemDetailContents" 
+            actionListener="#{editItemBean.add(field)}" />
+        
+        <p:commandButton
+            icon="fa fa-pencil-square-o" 
+            rendered="#{!field.readonly}"
+            update="editReferences"
+            oncomplete="PF('editReferences').show()"
+            actionListener="#{editReferencesBean.setField(field)}" />
+    </p:panel>
+</html>

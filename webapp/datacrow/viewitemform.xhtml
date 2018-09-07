@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+   <p:dialog header="#{viewItemBean.item.title}"
+             id="viewItemDetail"
+             widgetVar="viewItemDetail" 
+             modal="false" 
+             showEffect="fade" 
+             hideEffect="fade" 
+             resizable="true" 
+             width="40%" 
+             height="60%"
+             position="center"
+             closeOnEscape="true"
+             fitViewport="true"
+             showHeader="true">
+       
+        <h:form>
+            <p:breadCrumb model="#{viewItemBreadCrumbBean.model}" />
+        
+	        <div style="position: relative !important; top: 5px !important; vertical-align: top !important;">
+	        
+	            <p:accordionPanel activeIndex="0" multiple="false">
+
+	            <p:tab title="#{translationsBean.getText('lblDetails')}">
+                    <p:scrollPanel mode="native" style="width:100%;height:350px;border:none !important;">
+                        <ui:repeat var="field" value="#{viewItemBean.item.detailFields}">                                            
+                            <p:panelGrid style="border:none !important;width: 100% !important">
+                                <p:column style="width:140px;border:none !important;">
+                                    <p:outputLabel value="#{field.label}" />
+                                </p:column>
+                                <p:column style="border:none !important;">
+                                    <ui:include src="viewfield.xhtml" />
+                                </p:column>
+                            </p:panelGrid>
+                        </ui:repeat>
+                    </p:scrollPanel>
+	            </p:tab>
+	            
+	            <p:tab title="#{translationsBean.getText('lblTechnicalInfo')}">
+                    <p:scrollPanel mode="native" style="width:100%;height:350px;border:none !important;">
+                        <ui:repeat var="field" value="#{viewItemBean.item.technicalFields}">                                            
+                            <p:panelGrid style="border:none !important;width: 100% !important">
+                                <p:column style="width:140px;border:none !important;">
+                                    <p:outputLabel value="#{field.label}" />
+                                </p:column>
+                                <p:column style="border:none !important;">
+                                    <ui:include src="viewfield.xhtml" />
+                                </p:column>
+                            </p:panelGrid>
+                        </ui:repeat>
+                    </p:scrollPanel>
+                </p:tab>
+	            
+	            <p:tab title="#{translationsBean.getText('lblPictures')}" rendered="#{viewItemBean.item.hasPictures}">
+                    <p:scrollPanel mode="native" style="width:100%;height:350px;border:none !important;">
+                        <div style="margin-top:10px;">
+		                     <ui:repeat  value="#{viewItemBean.item.alivePictureFields}" var="image">
+		                       <p:link href="#{image.value.url}" target="new">
+		                            <p:graphicImage id="viewPicture" value="#{imageBean.content}" cache="false">
+		                             <f:param name="filename" value="#{image.value.filename}_small" />
+		                         </p:graphicImage>
+		                       </p:link>&nbsp;
+		                     </ui:repeat>
+	                     </div>
+                    </p:scrollPanel>
+                </p:tab>  
+	            
+	            <p:tab title="#{viewItemBean.item.module.childModule.itemPluralName}" rendered="#{viewItemBean.item.module.canHaveChildren}">
+                    <p:scrollPanel mode="native" style="width:100%;height:350px;border:none !important;">
+	                    <p:dataTable var="child" 
+	                           value="#{viewItemBean.item.children}" 
+	                           styleClass="itemform"
+	                           style="border:none;">
+	                           
+	                        <p:column headerText="" style="border:none;" >
+	                           <p:commandLink 
+	                               value="#{child.title}"
+	                               update=":viewItemDetail" 
+	                               oncomplete="PF('viewItemDetail').show()"
+	                               styleClass="dcButton">
+	                               <f:setPropertyActionListener target="#{viewItemBean.item}" value="#{child}" />
+	                            </p:commandLink>
+	                        </p:column>
+	                    </p:dataTable>
+	                </p:scrollPanel>
+                </p:tab>
+                
+	            <p:tab title="#{translationsBean.getText('lblRelatedItems')}" rendered="#{viewItemBean.item.hasReferencingItems}">
+	               <p:dataGrid var="reference" 
+                           value="#{viewItemBean.item.referencingItems}" 
+                           styleClass="itemform"
+                           layout="grid"
+                           style="border:none;"
+                           columns="3" 
+                           rows="20" 
+                           paginator="true"
+                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                           paginatorPosition="bottom">
+                           
+                        <p:column headerText="" style="border:none;">
+                        
+                        
+				           <p:commandLink
+				               value="#{reference.label}"
+				               update=":viewItemDetail" 
+				               oncomplete="PF('viewItemDetail').show()"
+				               styleClass="dcButton"
+                               style="height:40px">
+				               <f:setPropertyActionListener target="#{viewItemBean.reference}" value="#{reference}" />
+				            </p:commandLink>
+                        </p:column>
+                    </p:dataGrid>
+	            </p:tab>
+	         </p:accordionPanel>
+
+			<div id="button" style="position: relative !important; bottom: 5px !important; top: 5px !important; vertical-align: bottom !important;">
+				<p:commandLink value="#{translationsBean.getText('lblClose')}"
+					update=":viewItemDetail" 
+					oncomplete="PF('viewItemDetail').hide()"
+					styleClass="dcButton" />			
+            </div>
+		  </div>
+       </h:form>
+   </p:dialog>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="topModulesForm" prependId="false">
+    
+        <h:inputHidden id="screenSizeX" value="#{userSettingsBean.screenSizeX}" />
+        <h:inputHidden id="screenSizeY" value="#{userSettingsBean.screenSizeY}" />
+    
+		<p:accordionPanel style="margin-top:2px;">
+		   <p:tab title="#{translationsBean.getText('lblModules')}">
+		       <ui:repeat var="module" value="#{modulesBean.topModules}">
+			      <p:panel style="height:30px;text-valign:center;" class="dcPanel">
+                      <p:commandLink  
+                            action="#{itemsBean.reload}"
+                            style="width:164px !important"
+                            styleClass="dcModuleButton"
+                            rendered="#{modulesBean.selectedModule != module}">
+                          <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+                          <h:outputText value="#{module.label}" />
+                          <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+                          <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+                      </p:commandLink>
+                      
+                      <p:commandLink  
+                            action="#{itemsBean.reload}"
+                            style="width:164px !important"
+                            styleClass="dcModuleButton"
+                            rendered="#{modulesBean.selectedModule == module}">
+                          <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+                          <b><u><h:outputText value="#{module.label}" /></u></b>
+                          <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+                          <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+                      </p:commandLink>
+                      
+		          </p:panel>
+		       </ui:repeat>
+		   </p:tab>
+		</p:accordionPanel>
+    </h:form>
+
+    <h:form id="subModulesForm">
+	    <p:accordionPanel>
+	       <p:tab title="#{translationsBean.getText('lblRelatedModules')}" rendered="#{modulesBean.hasSubModules}">
+	           <ui:repeat var="module" value="#{modulesBean.subModules}">
+	               <p:panel style="border:none;height:30px;text-valign:left;" class="dcPanel">	                  
+                       <p:commandLink 
+                             action="#{itemsBean.reload}"
+                             style="width:164px !important"
+                             styleClass="dcModuleButton"
+                             rendered="#{modulesBean.selectedModule != module}">
+                             
+                           <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+                           <h:outputText value="#{module.label}" />
+                           <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+                           <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+                       </p:commandLink>
+                       
+                       <p:commandLink 
+                             action="#{itemsBean.reload}"
+                             style="width:164px !important"
+                             styleClass="dcModuleButton"
+                             rendered="#{modulesBean.selectedModule == module}">
+                             
+                           <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+                           <b><u><h:outputText value="#{module.label}" /></u></b>
+                           <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+                           <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+                       </p:commandLink>
+            
+	               </p:panel>
+	           </ui:repeat>
+	        </p:tab>
+	    </p:accordionPanel>
+    </h:form>
+    
+    <h:form id="administrationForm">
+	    <p:accordionPanel>
+	        <p:tab title="#{translationsBean.getText('lblLists')}" rendered="#{modulesBean.hasPropertyModules}">
+	            <ui:repeat var="module" value="#{modulesBean.propertyModules}">
+	               <p:panel style="border:none;height:30px;text-valign:left;" class="dcPanel">
+	                   <p:commandLink 
+	                       action="#{itemsBean.reload}"
+	                       title="View Detail"
+	                       style="width:164px !important"
+                           styleClass="dcModuleButton"
+                           rendered="#{modulesBean.selectedModule != module}">
+                           
+	                       <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+	                       <h:outputText value="#{module.label}" />
+	                       <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+	                       <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+	                   </p:commandLink>
+                       
+                       <p:commandLink 
+                           action="#{itemsBean.reload}"
+                           title="View Detail"
+                           style="width:164px !important"
+                           styleClass="dcModuleButton"
+                           rendered="#{modulesBean.selectedModule == module}">
+                           
+                           <p:graphicImage value="#{module.icon16Path}" />&nbsp;
+                           <b><u><h:outputText value="#{module.label}" /></u></b>
+                           <f:setPropertyActionListener value="#{module.index}" target="#{modulesBean.selectedModuleIdx}" />
+                           <f:setPropertyActionListener value="#{module.index}" target="#{itemsBean.selectedModule}" />
+                       </p:commandLink>
+	                </p:panel>
+	            </ui:repeat>
+	        </p:tab>
+	    </p:accordionPanel>
+    </h:form> 
+</html>

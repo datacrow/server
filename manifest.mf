@@ -1,0 +1,12 @@
+Manifest-Version: 4.1
+Ant-Version: Apache Ant 1.8.3
+Created-By: 1.6.0_25-b06 (Sun Microsystems Inc.)
+Built-By: Robert Jan van der Waals
+Main-Class: net.datacrow.server.DcServer
+Class-Path: lib/jacksum/jacksum.jar lib/datacrow-core.jar lib/hsqldb/hsqldb.jar lib/tomcat/apache-jstl-9.2.1.v20140609.jar lib/tomcat/ecj-4.4.2.jar lib/tomcat/servlet-api-3.1.jar lib/tomcat/tomcat-dbcp.jar lib/tomcat/tomcat-embed-core.jar lib/tomcat/tomcat-embed-el.jar lib/tomcat/tomcat-embed-jasper.jar lib/tomcat/tomcat-embed-logging-juli.jar lib/tomcat/tomcat-embed-logging-log4j.jar lib/tomcat/tomcat-embed-websocket.jar lib/log4j/log4j-1.2.14.jar lib/zip/truezip_7_7_6.jar lib/json/json-io-2.8.1.jar
+Specification-Title: Data Crow Server
+Specification-Version: 4.1
+Specification-Vendor: Robert Jan van der Waals
+Implementation-Title: Data Crow Server
+Implementation-Version: 4.1
+Implementation-Vendor: Robert Jan van der Waals

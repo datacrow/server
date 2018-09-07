@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:outputStylesheet library="default" name="stylesheets/style.css" />
+</h:head>
+<h:body onload="getClientInfo()">
+	<p:layout fullPage="true">
+	    <p:layoutUnit id="top" position="center">
+	    
+	        <div align="center">
+	           <p:graphicImage url="/datacrow/javax.faces.resource/default/images/logo.jpg.xhtml" />
+	        </div>
+	        
+		    <h:form id="loginForm" prependId="false">
+            
+		        <div align="center">
+		    
+		        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		        
+                <h:inputHidden id="screenSizeX" value="#{userSettingsBean.screenSizeX}" />
+                <h:inputHidden id="screenSizeY" value="#{userSettingsBean.screenSizeY}" />
+                
+		        <p><h:outputText value="#{translationsBean.getText('msgLoginInformation')}" /></p>
+		        <h:panelGrid columns="2" cellpadding="5">
+			        <p:outputLabel for="username" value="#{translationsBean.getText('lblUsername')}" />
+			        <p:inputText id="username" value="#{loginBean.username}" required="true" />
+			        <p:outputLabel for="password" value="#{translationsBean.getText('lblPassword')}" />
+			        <p:password id="password" value="#{loginBean.password}" />
+		        </h:panelGrid>
+		        
+		        <p><p:commandButton id="login" value="login" action="#{loginBean.login}" /></p>
+		        
+		        </div>
+		    </h:form>
+	    </p:layoutUnit>
+	</p:layout>
+    
+    <script type="text/javascript">
+        function getClientInfo()
+        {
+            (document.getElementById('screenSizeX')).value = window.innerWidth;
+            (document.getElementById('screenSizeY')).value = window.innerHeight;
+        }
+    </script>
+    
+</h:body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build" name="data crow">
+
+    <target depends="build-datacrow" name="build"/>
+
+    <path id="datacrow.class.path">
+        <fileset dir="../datacrow-core/lib/">
+        	<include name="log4j/*.jar"/>
+        	<include name="json/*.jar"/>
+            <include name="zip/*.jar"/>
+        </fileset>
+        <fileset dir="./lib/">
+            <include name="*.jar"/>
+            <include name="hsqldb/*.jar"/>
+            <include name="tomcat/*.jar"/>
+        </fileset>  
+    </path>
+    
+    <manifestclasspath jarfile="datacrow-server.jar" property="manifest.class.path">
+        <classpath refid="datacrow.class.path"/>
+    </manifestclasspath>
+
+    <target name="build-datacrow">
+    
+        <mkdir dir="_classes/" />
+        <javac srcdir="_source/" destdir="_classes/" debug="true">
+            <classpath refid="datacrow.class.path"/>
+        </javac>
+        
+        <copy todir="_classes/">
+            <fileset dir="_source/">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <jar basedir="_classes" manifest="manifest.mf" jarfile="datacrow-server.jar"  />
+
+    </target>
+</project>

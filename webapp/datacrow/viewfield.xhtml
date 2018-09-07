@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <p:panel styleClass="dcPanel" rendered="#{(field.textfield and !field.url)}">
+      <h:outputText value="#{field.value}" />
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.duration)}">
+      <h:outputText value="#{field.displayValue}" />
+    </p:panel>
+    
+    <p:panel rendered="#{field.dropDown}" styleClass="dcPanel">
+        <h:outputText value="#{field.displayValue}" />
+   </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.number)}">
+      <h:outputText value="#{field.value}" />
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.file)}">
+        <h:outputText value="#{field.value}" rendered="#{!field.enableDownload}" />
+      
+        <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s" rendered="#{field.enableDownload}">
+            <p:fileDownload value="#{field.streamedContent}" />
+        </p:commandButton>
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.doubleValue)}">
+      <h:outputText value="#{field.value}" />
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{field.url}">
+      <a href="#{field.value}" target="new">#{translationsBean.getText('lblLink')}</a>
+    </p:panel>
+
+    <p:panel styleClass="dcPanel" rendered="#{field.checkbox}">
+        <p:selectBooleanCheckbox disabled="true" value="#{field.value}" immediate="true" styleClass="checkbox" />
+    </p:panel>
+    
+    <p:inputTextarea rendered="#{field.longTextfield}" rows="10" cols="45" autoResize="false" readonly="true" value="#{field.value}" style="width:99% !important;" />
+    
+    <p:panel styleClass="dcPanel" rendered="#{field.date}">
+        <h:outputText value="#{field.displayValue}" />
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{field.rating}">
+        <p:rating readonly="true" value="#{field.value}" stars="10" cancel="false" />
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{field.icon}">
+	    <p:graphicImage value="#{imageBean.content}" rendered="#{viewItemBean.item.iconExists}" cache="false">
+	        <f:param name="filename" value="#{viewItemBean.item.icon}" />
+	    </p:graphicImage>
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.multiRelate || field.tagField) and field.navigationAllowed}">
+	    <ui:repeat var="reference" value="#{field.value}">
+	       <p:commandLink 
+	           update=":viewItemDetail" 
+	           oncomplete="PF('viewItemDetail').show()"
+	           styleClass="dcButton">
+               <p:graphicImage value="#{imageBean.content}" rendered="#{reference.iconExists}" cache="false">
+                   <f:param name="filename" value="#{reference.iconFilename}" />
+               </p:graphicImage>
+	           #{reference.label}
+	           <f:setPropertyActionListener target="#{viewItemBean.reference}" value="#{reference}" />
+	        </p:commandLink>
+	    </ui:repeat>
+    </p:panel>
+    
+    <p:panel styleClass="dcPanel" rendered="#{(field.multiRelate || field.tagField) and !field.navigationAllowed}">
+        <ui:repeat var="reference" value="#{field.value}">
+           <p:commandLink 
+               styleClass="dcButton">
+               <p:graphicImage value="#{imageBean.content}" rendered="#{reference.iconExists}" cache="false">
+                   <f:param name="filename" value="#{reference.iconFilename}" />
+               </p:graphicImage>
+               #{reference.label}
+            </p:commandLink>
+        </ui:repeat>
+    </p:panel>   
+</html>

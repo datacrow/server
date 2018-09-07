@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+   <p:dialog header="#{translationsBean.getText('lblOverviewFieldSettings')}"
+             id="editOverviewsettings"
+             widgetVar="editOverviewsettings" 
+             modal="false" 
+             showEffect="fade" 
+             hideEffect="fade" 
+             width="470px" 
+             height="240px"
+             position="center"
+             closeOnEscape="true">
+       
+        <h:form>
+
+	        <p:pickList value="#{settingsBean.overviewFields}" var="overviewField" itemLabel="#{overviewField}" itemValue="#{overviewField.index}" />
+         
+            <div style="position: relative !important; bottom: 5px !important; top: 5px !important; vertical-align: bottom !important;">
+               <p:commandButton
+                   value="#{translationsBean.getText('lblSave')}"
+                   update=":itemOverviewForm"
+                   oncomplete="PF('editOverviewsettings').hide()"
+                   actionListener="#{settingsBean.saveOverviewFields}" />
+            </div>	       
+
+       </h:form>
+   </p:dialog>
+</html>

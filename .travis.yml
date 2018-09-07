@@ -1,4 +1,4 @@
 language: java
 script: ant
 before_script:
-  - /home/travis/build/datacrow/server/get_dependencies.sh
+  - ./get_dependencies.sh

@@ -4,12 +4,10 @@
     <target depends="build-datacrow" name="build"/>
 
     <path id="datacrow.class.path">
-        <fileset dir="../datacrow-core/lib/">
-        	<include name="log4j/*.jar"/>
-        	<include name="json/*.jar"/>
-            <include name="zip/*.jar"/>
-        </fileset>
         <fileset dir="./lib/">
+            <include name="log4j/*.jar"/>
+            <include name="json/*.jar"/>
+            <include name="zip/*.jar"/>
             <include name="*.jar"/>
             <include name="hsqldb/*.jar"/>
             <include name="tomcat/*.jar"/>

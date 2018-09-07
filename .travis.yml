@@ -1,14 +1,13 @@
 language: java
 script: ant
 before_script:
-  - ./get_dependencies.sh
+- "./get_dependencies.sh"
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: mkVQLJf8Q4cuBin6mjvRte9W5d6sQzjz4Y9cDUrZmdS5aNgbPQW4yoVIkvjj/WyKURnzbLN0HwwjAVKnLGelN/Rkfpx6gv77RJVdAm5nBzW7/hpoK2X1l0tIiIjMs93WT8k6JmzXbWgPC07uwiufPG3ptUKgsu4rlSM06uKNXsEs433F33vsXpWTbx0pEP8nNokEt4lMBXWj5fZQihSv3Yn12Lq4mzZ/nK0O7V54zQppwVIHH2MxagOj09rR4cqTE9mbvavbH1N7fWrC6OxdA46MB11fqmwNdX4GSfPVbruDdzlRoEe6H2TGUCDi2g5eNTrmhOnqU9WTTbkeRKKjDMOAsrrTUjKfbLwH9DskofWncPbiulcdBBC5FiGBkFHGKFO8jPaj8YIo7vHV3Iz4V+8tRqhtmdls32USCzzztl6Ym8OLwDb6J0KSe/fb7htsRuvpfNxH513QabpyeLucaxqQX8nUZ7kd+RBKv6ncHlinGK/Y3cGlvtaZyU1jSyPszkvKszemrEkTICOP7391nwRTsVXexnrAFh+Qe81mkRu7bAvdTa1C9225Q1FeplKGHqvqVoUMhyDKWT5THIApgXLBw5gFsOAh9APqC8lavXGA2BaPXYYGP8MOfsRgP3Gx4oucSboaW2B0Z5mSutvhx85+0NFox30IJnSkUxHZf18=
-  file: "datacrow-server.jar"
+    secure: leSEjPTpJibApvDL1X3wArJt1lgCOMnDzU2cDjaXArXwQXVLqIYwTkJHtKG6CJPC2FoSjcxLkSVoSzRJJ/OD4C3Ibw+xmct92a7Qdwc+zcER5Kn6MUI4s9++mxLKMJWoCmAtLwgAdnEI2YGqUFvwEKoPdL+tnmImU3hXinPl5nBGAWpHXkNKUz0alL+tlT+N18ucXMEHoSFoil1hsrkvxk1EcIDxLwAFllhad0q5tZJ4am6D0S3EcfmhYkv2aHnUgqr8Ez6ehPcywgAUmEFPPMU56iY+039G95zvkV9h4E160qt1gm3mrgqwz2jambx7XoopEL8nwdADX4FCNHlhdKrbrhB+mCM6+GkGV/lFl8sA1dReeQkWb1YBmrpwr5YUwzwqieXWpNg2WjJ/IeWvEyvghDpT3gWxDi5dUhaR30XwhalV3ndmW0CkgX+9AF66A7e+CA7rs/1jdZQq3pLzII4ggLIo2KxZjR69YA8YV3oM+5gAAVsRuqe4PZSTAK9x0aMpuoEcnYo+eyer1t5DCHGVogndu3hKbsZ9YvZvDCe/TY64lAIAirBWuhTyCccm9e4iMmH2XpstIZgANGbeaeBlUVBE6q/jduVl3406l9JCD+gADg1ySGk9cGPOVe8ounNIy3R2nzhfE/fs7T+0p9L14CJSdORo14bE0qantX8=
+  file: datacrow-server.jar
   on:
-      repo: datacrow/server
-      tags: true
-  
+    repo: datacrow/server
+    tags: true
